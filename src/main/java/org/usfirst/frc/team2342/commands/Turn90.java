@@ -2,7 +2,7 @@ package org.usfirst.frc.team2342.commands;
 
 import org.usfirst.frc.team2342.robot.sensors.Gyro;
 import org.usfirst.frc.team2342.robot.subsystems.TankDrive;
-import org.usfirst.frc.team2342.robot.subsystems.WestCoastTankDrive;
+
 import org.usfirst.frc.team2342.util.Constants;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,7 +23,7 @@ public class Turn90 extends Command {
 		this.westCoast = westCoast;
     	
     	this.direction = direction;
-    	this.startAngle = Gyro.angle();
+    	//this.startAngle = Gyro.angle();
     	this.angle = angle;
 	}
 	
@@ -57,7 +57,7 @@ public class Turn90 extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return System.currentTimeMillis() - startTime > ((direction ? SmartDashboard.getNumber("DB/Slider 3", 2000) : SmartDashboard.getNumber("DB/Slider 2", 2000))*angle/90.0);
+        return System.currentTimeMillis() - startTime > 850;
     }
 
     // Called once after isFinished returns true

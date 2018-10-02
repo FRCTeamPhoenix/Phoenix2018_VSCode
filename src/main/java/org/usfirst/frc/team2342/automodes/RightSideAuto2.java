@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class RightSideAuto extends CommandGroup {
+public class RightSideAuto2 extends CommandGroup {
 
-	public RightSideAuto(TankDrive drive, CascadeElevator cascade, BoxManipulator manip, Joystick gamepad) {
+	public RightSideAuto2(TankDrive drive, CascadeElevator cascade, BoxManipulator manip, Joystick gamepad) {
 		if(DriverStation.getInstance().getGameSpecificMessage().length() > 0 && DriverStation.getInstance().getGameSpecificMessage().charAt(1) == 'R') {
 			addSequential(new TiltManipulator(manip));
 			addSequential(new DriveDistance2(drive, 12));
@@ -24,8 +24,15 @@ public class RightSideAuto extends CommandGroup {
 			addSequential(new DriveDistance2(drive, 13));
 			addSequential(new Turn90(drive, true));
 			addSequential(new PushBox(manip, gamepad, 0.5));
-		} else {
+		} else if(DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R') {
+			addSequential(new TiltManipulator(manip));
 			addParallel(new CascadePosition(cascade, Constants.CASCADE_SWITCH, gamepad));
+			addSequential(new DriveDistance2(drive, 12.75));
+			addSequential(new Turn90(drive, true));
+			addSequential(new DriveDistance2(drive, 0.75));
+			addSequential(new PushBox(manip, gamepad, 0.5));
+		} else {
+			addSequential(new TiltManipulator(manip));
 			addSequential(new DriveDistance2(drive, 17));
 		}
 	}

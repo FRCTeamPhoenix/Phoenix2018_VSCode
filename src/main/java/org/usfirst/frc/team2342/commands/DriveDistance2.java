@@ -12,31 +12,25 @@ public class DriveDistance2 extends Command {
 
     private TankDrive tankDrive;
 	private double distance;
-	
-	private double speed;
 
-	public DriveDistance2(TankDrive tankDrive, double distance, double speed) {
+	public DriveDistance2(TankDrive tankDrive, double distance) {
     	requires(tankDrive);
     	this.tankDrive = tankDrive;
     	this.distance = distance;
-    	this.speed = speed;
+    	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
-	
-	public DriveDistance2(TankDrive tankDrive, double distance) {
-		this(tankDrive, distance, Constants.WESTCOAST_HALF_SPEED);
-	}
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	tankDrive.zeroSensors();
-    	tankDrive.setHighGear();
+    	//tankDrive.setHighGear();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	tankDrive.goDistance2(distance, -speed);
+    	tankDrive.goDistance(distance);
     }
 
     // Make this return true when this Command no longer needs to run execute()

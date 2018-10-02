@@ -14,18 +14,25 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class RightSideAuto extends CommandGroup {
+public class LeftSideAuto2 extends CommandGroup {
 
-	public RightSideAuto(TankDrive drive, CascadeElevator cascade, BoxManipulator manip, Joystick gamepad) {
-		if(DriverStation.getInstance().getGameSpecificMessage().length() > 0 && DriverStation.getInstance().getGameSpecificMessage().charAt(1) == 'R') {
+	public LeftSideAuto2(TankDrive drive, CascadeElevator cascade, BoxManipulator manip, Joystick gamepad) {
+		if(DriverStation.getInstance().getGameSpecificMessage().length() > 0 && DriverStation.getInstance().getGameSpecificMessage().charAt(1) == 'L') {
 			addSequential(new TiltManipulator(manip));
 			addSequential(new DriveDistance2(drive, 12));
 			addParallel(new CascadePosition(cascade, Constants.CASCADE_UPPER_SCALE, gamepad));
 			addSequential(new DriveDistance2(drive, 13));
-			addSequential(new Turn90(drive, true));
+			addSequential(new Turn90(drive, false));
+			addSequential(new PushBox(manip, gamepad, 0.5));
+		} else if(DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'L') {
+			addSequential(new TiltManipulator(manip));
+			addParallel(new CascadePosition(cascade, Constants.CASCADE_SWITCH, gamepad));
+			addSequential(new DriveDistance2(drive, 12.75));
+			addSequential(new Turn90(drive, false));
+			addSequential(new DriveDistance2(drive, 0.75));
 			addSequential(new PushBox(manip, gamepad, 0.5));
 		} else {
-			addParallel(new CascadePosition(cascade, Constants.CASCADE_SWITCH, gamepad));
+			addSequential(new TiltManipulator(manip));
 			addSequential(new DriveDistance2(drive, 17));
 		}
 	}
