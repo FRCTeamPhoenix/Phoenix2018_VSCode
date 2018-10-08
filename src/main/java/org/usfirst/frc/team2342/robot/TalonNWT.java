@@ -1,6 +1,5 @@
-/*package org.usfirst.frc.team2342.robot;
+package org.usfirst.frc.team2342.robot;
 
-import org.usfirst.frc.team2342.PIDLoops.GyroPIDController;
 import org.usfirst.frc.team2342.util.Constants;
 import org.usfirst.frc.team2342.util.NetworkTableInterface;
 
@@ -32,7 +31,7 @@ public class TalonNWT {
 		return NetworkTableInterface.getBoolean(boolTable, "UpdatePID");
 	}
 	
-	public static void populateGyroPID(GyroPIDController gyro) {
+	/*public static void populateGyroPID(GyroPIDController gyro) {
 		int id = 100;
 		String pidTable = Constants.TALON_TABLE_LOCATION + "/" + id + "/pid-0";
 //		String angleTable = Constants.TALON_TABLE_LOCATION + "/" + id + "/Angle";
@@ -40,9 +39,9 @@ public class TalonNWT {
 		GyroPIDController.setP(NetworkTableInterface.getDouble(pidTable, "/P"));
 		GyroPIDController.setI(NetworkTableInterface.getDouble(pidTable, "/I"));
 		GyroPIDController.setD(NetworkTableInterface.getDouble(pidTable, "/D"));
-	}
+	}*/
 	
-	public static void updateGyroPID() {
+	/*public static void updateGyroPID() {
 		int id = 100;
 		String talonTable = Constants.TALON_TABLE_LOCATION + "/" + id;
 		NetworkTableInterface.setValue(talonTable, "P", GyroPIDController.getP());
@@ -50,7 +49,7 @@ public class TalonNWT {
 		NetworkTableInterface.setValue(talonTable, "D", GyroPIDController.getD());
 		NetworkTableInterface.setValue(talonTable, "Current Angle", GyroPIDController.getCurAngle());
 		NetworkTableInterface.setValue(talonTable, "Angle Error", GyroPIDController.calculateAE());
-	}
+	}*/
 	
 	public static void updateTalon(TalonSRX talon){
 		String talonTable = Constants.TALON_TABLE_LOCATION + "/"+talon.getDeviceID();
@@ -87,4 +86,3 @@ public class TalonNWT {
 		//Donothing
 	}
 }
-*/
