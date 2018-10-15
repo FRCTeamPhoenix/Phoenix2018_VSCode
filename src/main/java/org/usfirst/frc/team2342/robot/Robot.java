@@ -218,7 +218,8 @@ public class Robot extends IterativeRobot {
 			Thread.sleep(10);
 		} catch (Exception e) {
 		}
-
+		
+		updateNWT();
 	}
 
 	public void disabledInit() {
@@ -299,4 +300,13 @@ public class Robot extends IterativeRobot {
 		tankDrive.setPid(p);
 	}
 
+
+	//sets pid values on the network table
+	public void updateNWT(){
+		TalonNWT.updateTalon(talonFR);
+		TalonNWT.setPIDValues(0, talonFR);
+
+		TalonNWT.updateTalon(talonFL);
+		TalonNWT.setPIDValues(0, talonFL);
+	}
 }
