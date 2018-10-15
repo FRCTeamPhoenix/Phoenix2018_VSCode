@@ -115,7 +115,6 @@ public class Robot extends IterativeRobot {
 		Command driveJoystick = new DriveGamepad(gamepad, tankDrive, cascadeElevator);
 		Scheduler.getInstance().add(driveJoystick);
 
-		this.updatePID();
 
 		talonFR.configSetParameter(ParamEnum.eOnBoot_BrakeMode, 0.0, 0, 0, 0);
 		talonFL.configSetParameter(ParamEnum.eOnBoot_BrakeMode, 0.0, 0, 0, 0);
@@ -238,7 +237,6 @@ public class Robot extends IterativeRobot {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		updatePID();
 		String AutonomousMode;
 		AutonomousMode = SmartDashboard.getString("Auto Selector", "");
 		if (AutonomousMode.equals("Drive Forward"))
