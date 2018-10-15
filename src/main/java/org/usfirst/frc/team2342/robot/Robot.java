@@ -20,6 +20,7 @@ import org.usfirst.frc.team2342.robot.subsystems.TankDrive;
 import org.usfirst.frc.team2342.util.Constants;
 import org.usfirst.frc.team2342.util.FMS;
 import org.usfirst.frc.team2342.util.PIDGains;
+import org.usfirst.frc.team2342.util.TalonNetworkTableController;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -88,6 +89,8 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void robotInit() {
+		TalonNetworkTableController.pushTalon(talonFR);
+		TalonNetworkTableController.pushTalon(talonFL);
 		String[] autoList = { "Center Switch", "Right Switch", "Left Switch", "Drive Forward", "Left Scale",
 				"Right Scale", "Left Switch/Scale", "Right Switch/Scale", "Test Auto" };
 		SmartDashboard.putStringArray("Auto List", autoList);
@@ -283,19 +286,17 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 	}
-	// updates the PID in gyro with the sliders or the networktables.
+
+
+
+	// updates the tank drive PID
 	public void updatePID() {
 		PIDGains p = new PIDGains();
-	
-		p.p = 1.0; // SmartDashboard.getNumber("DB/Slider 0", 0);
-		p.i = 0; // SmartDashboard.getNumber("DB/Slider 1", 0);
-		p.d = 0; // SmartDashboard.getNumber("DB/Slider 2", 0);
-		p.ff = 0; // SmartDashboard.getNumber("DB/Slider 3", 0);
+		p.p = 1.0;
+		p.i = 0;
+		p.d = 0; 
+		p.ff = 0;
 		tankDrive.setPid(p);
-		SmartDashboard.putString("DB/String 6", String.valueOf(p.p));
-		SmartDashboard.putString("DB/String 7", String.valueOf(p.i));
-		SmartDashboard.putString("DB/String 8", String.valueOf(p.d));
-		SmartDashboard.putString("DB/String 9", String.valueOf(p.ff));
 	}
 
 }
