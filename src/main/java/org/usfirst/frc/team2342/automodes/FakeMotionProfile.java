@@ -50,13 +50,16 @@ public class FakeMotionProfile extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    long time = System.currentTimeMillis() - startTime;
+    int time = (int)(System.currentTimeMillis() - startTime);
     if(time < accelTimeMs)  {
       talon.set(ControlMode.Velocity, cruiseVelocity * (float)time / accelTimeMs);
+      System.out.println("accelerating: " + cruiseVelocity * (float)time / accelTimeMs);
     } else if(time < accelTimeMs + cruiseTimeMs) {
       talon.set(ControlMode.Velocity, cruiseVelocity);
+      System.out.println("cruising: " + cruiseVelocity);
     } else if(time < accelTimeMs + cruiseTimeMs + decelTimeMs) {
       talon.set(ControlMode.Velocity, cruiseVelocity * (1.0 - ((float)time - accelTimeMs - cruiseTimeMs)/decelTimeMs));
+      System.out.println("decelerating: " + cruiseVelocity * (1.0 - ((float)time - accelTimeMs - cruiseTimeMs)/decelTimeMs));
     } else {
       finished = true;
     }

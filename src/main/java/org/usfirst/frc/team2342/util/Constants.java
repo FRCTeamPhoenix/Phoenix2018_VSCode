@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.SerialPort;
 
 public class Constants {
 	
+	public static final int MIN_PROFILE_POINTS = 20;
+
 	public static final int AUTO_POS_LEFT = 0;
 	public static final int AUTO_POS_MID = 1;
 	public static final int AUTO_POS_RIGHT = 2;
