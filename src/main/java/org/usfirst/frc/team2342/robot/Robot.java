@@ -92,7 +92,7 @@ public class Robot extends IterativeRobot {
 		TalonNetworkTableController.pushTalon(talonFR);
 		TalonNetworkTableController.pushTalon(talonFL);
 		String[] autoList = { "Center Switch", "Right Switch", "Left Switch", "Drive Forward", "Left Scale",
-				"Right Scale", "Left Switch/Scale", "Right Switch/Scale", "Test Auto" };
+				"Right Scale", "Left Switch/Scale", "Right Switch/Scale", "Test Auto","Drive Backward" };
 		SmartDashboard.putStringArray("Auto List", autoList);
 
 		if (!cascadeElevator.lowerLimit.get())
@@ -102,7 +102,7 @@ public class Robot extends IterativeRobot {
 		CameraControl cameras = new CameraControl(320, 240, 15);
 		cascadeElevator.lastPosition = 0;
 
-		updatePID();
+		
 
 	}
 
@@ -281,9 +281,26 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testInit() {
 		System.out.println("TEST MODE INIT");
+		TalonNetworkTableController.pushTalon(talonFR);
+		TalonNetworkTableController.pushTalon(talonFL);
+		
+		
+		TalonNWT.updateTalon(talonFR);
+		TalonNWT.updateTalon(talonFL);
 	}
 	@Override
 	public void testPeriodic() {
+		if (gamepad.getRawButton(1))
+			Scheduler.getInstance().add(new DriveDistance2(tankDrive,10));
+		else if (gamepad.getRawButton(2))
+			Scheduler.getInstance().add(new DriveDistance2(tankDrive, -10));
+		talonBL.follow(talonFL);
+		talonBR.follow(talonFR);
+		TalonNWT.updateTalon(talonFR);
+		TalonNWT.updateTalon(talonFL);
+		Scheduler.getInstance().run();
+		
+
 	}
 
 
