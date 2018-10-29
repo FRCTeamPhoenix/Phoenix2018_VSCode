@@ -290,6 +290,8 @@ public class Robot extends IterativeRobot {
 	}
 	@Override
 	public void testPeriodic() {
+		Scheduler.getInstance().run();
+		
 		if (gamepad.getRawButton(1))
 			Scheduler.getInstance().add(new DriveDistance2(tankDrive,10));
 		else if (gamepad.getRawButton(2))
@@ -298,7 +300,7 @@ public class Robot extends IterativeRobot {
 		talonBR.follow(talonFR);
 		TalonNWT.updateTalon(talonFR);
 		TalonNWT.updateTalon(talonFL);
-		Scheduler.getInstance().run();
+		
 		
 
 	}

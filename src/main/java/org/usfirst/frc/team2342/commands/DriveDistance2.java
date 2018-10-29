@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import org.usfirst.frc.team2342.robot.subsystems.TankDrive;
 import org.usfirst.frc.team2342.util.Constants;
+import java.*;
+import java.util.Scanner;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -21,7 +23,8 @@ public class DriveDistance2 extends Command {
     	this.tankDrive = tankDrive;
         this.distance = distance;
         this.forward = distance >= 0;
-    	
+
+
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
