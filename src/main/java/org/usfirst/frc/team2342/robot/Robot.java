@@ -1,18 +1,12 @@
 package org.usfirst.frc.team2342.robot;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import com.ctre.phoenix.ParamEnum;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import org.usfirst.frc.team2342.automodes.LeftSideAuto;
-import org.usfirst.frc.team2342.automodes.LeftSideAuto2;
-import org.usfirst.frc.team2342.automodes.LeftSwitchAuto;
-import org.usfirst.frc.team2342.automodes.MiddleAuto;
-import org.usfirst.frc.team2342.automodes.RightSideAuto;
-import org.usfirst.frc.team2342.automodes.RightSideAuto2;
-import org.usfirst.frc.team2342.automodes.RightSwitchAuto;
+import org.usfirst.frc.team2342.automodes.FakeMotionProfile;
+import org.usfirst.frc.team2342.automodes.SimpleProfile;
 import org.usfirst.frc.team2342.commands.CascadePosition;
-import org.usfirst.frc.team2342.commands.DriveDistance2;
 import org.usfirst.frc.team2342.commands.DriveGamepad;
 import org.usfirst.frc.team2342.robot.subsystems.BoxManipulator;
 import org.usfirst.frc.team2342.robot.subsystems.CascadeElevator;
@@ -20,10 +14,7 @@ import org.usfirst.frc.team2342.robot.subsystems.TankDrive;
 import org.usfirst.frc.team2342.util.Constants;
 import org.usfirst.frc.team2342.util.FMS;
 import org.usfirst.frc.team2342.util.PIDGains;
-
-import com.ctre.phoenix.ParamEnum;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import org.usfirst.frc.team2342.util.TalonNetworkTableController;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
@@ -31,7 +22,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -226,45 +216,20 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		talonFR.configSetParameter(ParamEnum.eOnBoot_BrakeMode, 1.0, 1, 0, 0);
 		talonFL.configSetParameter(ParamEnum.eOnBoot_BrakeMode, 1.0, 1, 0, 0);
-
+		
 		System.out.println("AUTOMODE INIT");
 
 		FMS.init();
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		updatePID();
-		String AutonomousMode;
-		AutonomousMode = SmartDashboard.getString("Auto Selector", "");
-		if (AutonomousMode.equals("Drive Forward"))
-			Scheduler.getInstance().add(new DriveDistance2(tankDrive, 10));
-		else if (AutonomousMode.equals("Center Switch"))
-			Scheduler.getInstance().add(new MiddleAuto(tankDrive, cascadeElevator, boxManipulator, gamepad));
-		else if (AutonomousMode.equals("Right Switch"))
-			Scheduler.getInstance().add(new RightSwitchAuto(tankDrive, cascadeElevator, boxManipulator, gamepad));
-		else if (AutonomousMode.equals("Left Switch"))
-			Scheduler.getInstance().add(new LeftSwitchAuto(tankDrive, cascadeElevator, boxManipulator, gamepad));
-		else if (AutonomousMode.equals("Right Scale"))
-			Scheduler.getInstance().add(new RightSideAuto(tankDrive, cascadeElevator, boxManipulator, gamepad));
-		else if (AutonomousMode.equals("Left Scale"))
-			Scheduler.getInstance().add(new LeftSideAuto(tankDrive, cascadeElevator, boxManipulator, gamepad));
-		else if (AutonomousMode.equals("Left Switch/Scale"))
-			Scheduler.getInstance().add(new LeftSideAuto2(tankDrive, cascadeElevator, boxManipulator, gamepad));
-		else if (AutonomousMode.equals("Right Switch/Scale"))
-			Scheduler.getInstance().add(new RightSideAuto2(tankDrive, cascadeElevator, boxManipulator, gamepad));
-		else if (AutonomousMode.equals("Test Auto"))
-
-			Scheduler.getInstance().add(new MiddleAuto(tankDrive, cascadeElevator, boxManipulator, gamepad));
-
+		TalonNetworkTableController.pushTalon(talonFL);
+		TalonNetworkTableController.pushTalon(talonFR);
+		Scheduler.getInstance().add(new FakeMotionProfile(tankDrive, 1200, 2000, 5000, 2000, 10));
 	}
 
 	public void autonomousPeriodic() {
 
 		Scheduler.getInstance().run();
-
-		try {
+		updateNWT();
+		/*try {
 			Thread.sleep(10);
 		} catch (Exception e) {
 		}
@@ -274,7 +239,7 @@ public class Robot extends IterativeRobot {
 				cascadeElevator.talonCascade.selectProfileSlot(1, 0);
 				cascadeElevator.talonCascade.set(ControlMode.Position, cascadeElevator.lastPosition);
 			}
-		}
+		}*/
 	}
 
 	@Override

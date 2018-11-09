@@ -10,11 +10,13 @@ package org.usfirst.frc.team2342.automodes;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import org.usfirst.frc.team2342.robot.subsystems.TankDrive;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class FakeMotionProfile extends Command {
 
-  WPI_TalonSRX talon;
+  TankDrive tankDrive;
 
   private float cruiseVelocity;
   private int accelTimeMs;
@@ -25,8 +27,9 @@ public class FakeMotionProfile extends Command {
   private long startTime;
   private boolean finished;
 
-  public FakeMotionProfile(WPI_TalonSRX talon, float cruiseVelocity, int accelTimeMs, int cruiseTimeMs, int decelTimeMs, int timeStepMs) {
-    this.talon = talon;
+  public FakeMotionProfile(TankDrive tankDrive, float cruiseVelocity, int accelTimeMs, int cruiseTimeMs, int decelTimeMs, int timeStepMs) {
+    requires(tankDrive);
+    this.tankDrive = tankDrive;
     this.cruiseVelocity = cruiseVelocity;
     this.accelTimeMs = accelTimeMs;
     this.cruiseTimeMs = cruiseTimeMs;
@@ -35,14 +38,14 @@ public class FakeMotionProfile extends Command {
     this.finished = true;
   }
 
-  public FakeMotionProfile(WPI_TalonSRX talon, float cruiseVelocity, int accelTimeMs, int cruiseTimeMs, int decelTimeMs) {
-    this(talon, cruiseVelocity, accelTimeMs, cruiseTimeMs, decelTimeMs, 10);
+  public FakeMotionProfile(TankDrive tankDrive, float cruiseVelocity, int accelTimeMs, int cruiseTimeMs, int decelTimeMs) {
+    this(tankDrive, cruiseVelocity, accelTimeMs, cruiseTimeMs, decelTimeMs, 10);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    talon.set(ControlMode.Velocity, 0);
+    tankDrive.setVelocity(0, 0);
     startTime = System.currentTimeMillis();
     finished = false;
   }
@@ -52,13 +55,13 @@ public class FakeMotionProfile extends Command {
   protected void execute() {
     int time = (int)(System.currentTimeMillis() - startTime);
     if(time < accelTimeMs)  {
-      talon.set(ControlMode.Velocity, cruiseVelocity * (float)time / accelTimeMs);
+      tankDrive.setVelocity(cruiseVelocity * (float)time / accelTimeMs, cruiseVelocity * (float)time / accelTimeMs);
       System.out.println("accelerating: " + cruiseVelocity * (float)time / accelTimeMs);
     } else if(time < accelTimeMs + cruiseTimeMs) {
-      talon.set(ControlMode.Velocity, cruiseVelocity);
+      tankDrive.setVelocity(cruiseVelocity, cruiseVelocity);
       System.out.println("cruising: " + cruiseVelocity);
     } else if(time < accelTimeMs + cruiseTimeMs + decelTimeMs) {
-      talon.set(ControlMode.Velocity, cruiseVelocity * (1.0 - ((float)time - accelTimeMs - cruiseTimeMs)/decelTimeMs));
+      tankDrive.setVelocity(cruiseVelocity * (1.0 - ((float)time - accelTimeMs - cruiseTimeMs)/decelTimeMs), cruiseVelocity * (1.0 - ((float)time - accelTimeMs - cruiseTimeMs)/decelTimeMs));
       System.out.println("decelerating: " + cruiseVelocity * (1.0 - ((float)time - accelTimeMs - cruiseTimeMs)/decelTimeMs));
     } else {
       finished = true;
@@ -74,7 +77,7 @@ public class FakeMotionProfile extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    talon.set(ControlMode.Velocity, 0);
+    tankDrive.setVelocity(0,0);
   }
 
   // Called when another command which requires one or more of the same

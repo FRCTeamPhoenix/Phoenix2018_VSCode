@@ -110,7 +110,7 @@ public class RealMotionProfile extends Command {
 			point.zeroPos = (i == 0);
 
 			point.isLastPoint = (i + 1 == totalCnt);
-
+      System.out.println(point);
 			_talon.pushMotionProfileTrajectory(point);
     }
   }
