@@ -55,27 +55,7 @@ public class TankDrive extends Subsystem{
 		rightA.configNominalOutputReverse(0, 0);
 		rightA.configPeakOutputForward(1.0, 0);
 		rightA.configPeakOutputReverse(-1.0, 0);
-	
-		leftA.config_kF(PidLoopIndexHigh, SmartDashboard.getNumber("DB/Slider 0", 0), PidTimeOutMs);
-		leftA.config_kP(PidLoopIndexHigh, SmartDashboard.getNumber("DB/Slider 1", 0), PidTimeOutMs);
-		leftA.config_kI(PidLoopIndexHigh, SmartDashboard.getNumber("DB/Slider 2", 0), PidTimeOutMs);
-		leftA.config_kD(PidLoopIndexHigh, SmartDashboard.getNumber("DB/Slider 3", 0), PidTimeOutMs);
-		
-		rightA.config_kF(PidLoopIndexHigh, SmartDashboard.getNumber("DB/Slider 0", 0), PidTimeOutMs);
-		rightA.config_kP(PidLoopIndexHigh, SmartDashboard.getNumber("DB/Slider 1", 0), PidTimeOutMs);
-		rightA.config_kI(PidLoopIndexHigh, SmartDashboard.getNumber("DB/Slider 2", 0), PidTimeOutMs);
-		rightA.config_kD(PidLoopIndexHigh, SmartDashboard.getNumber("DB/Slider 3", 0), PidTimeOutMs);
-		
-		leftA.config_kF(PidLoopIndexLow, 0.0, PidTimeOutMs);
-		leftA.config_kP(PidLoopIndexLow, 0.02, PidTimeOutMs);
-		leftA.config_kI(PidLoopIndexLow, 0.0, PidTimeOutMs);
-		leftA.config_kD(PidLoopIndexLow, 0, PidTimeOutMs);
-		
-		rightA.config_kF(PidLoopIndexLow, 0.0, PidTimeOutMs);
-		rightA.config_kP(PidLoopIndexLow, 0.02, PidTimeOutMs);
-		rightA.config_kI(PidLoopIndexLow, 0.0, PidTimeOutMs);
-		rightA.config_kD(PidLoopIndexLow, 0, PidTimeOutMs);
-		
+
 		leftB.follow(leftA);
 		rightB.follow(rightA);
 		zeroSensors(); 
@@ -154,7 +134,12 @@ public class TankDrive extends Subsystem{
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		
+	}
+	//Distance is in encoder ticks
+	public void goToEncoderTick(int distance) {
+
+		leftA.set(ControlMode.Position,distance);
+		rightA.set(ControlMode.Position,distance);
 	}
 	public void setPid(PIDGains pid) {
 		leftA.config_kF(PidLoopIndexHigh, pid.ff, PidTimeOutMs);

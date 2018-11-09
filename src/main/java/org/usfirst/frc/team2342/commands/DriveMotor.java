@@ -12,18 +12,22 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DriveDistance2 extends Command {
+public class DriveMotor extends Command {
 
     private TankDrive tankDrive;
-    private double distance;
-    private boolean forward;
-
-	public DriveDistance2(TankDrive tankDrive, double distance) {
+    private int distance;
+    private int leftFinished;
+    private int rightFinished;
+    //Distance in feet
+	public DriveMotor(TankDrive tankDrive, double distance) {
         System.out.println("DriveDistance2 created.");
         requires(tankDrive);
     	this.tankDrive = tankDrive;
-        this.distance = distance;
-        this.forward = distance >= 0;
+        this.distance = (int) (-distance * 4096 / 1.57);
+        leftFinished = 0;
+        rightFinished = 0;
+
+        
 
 
         // Use requires() here to declare subsystem dependencies
@@ -41,32 +45,30 @@ public class DriveDistance2 extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        System.out.println("DriveDinstance2 Execute Started.");
-        System.out.println(Math.abs((tankDrive.leftA.getSelectedSensorPosition(0)) + distance/Constants.TALON_RPS_TO_FPS * Constants.TALON_TICKS_PER_REV));
-        if (forward) {
-            //tankDrive.talon(-1200, -1200);
-            tankDrive.leftA.set(ControlMode.PercentOutput,0.5);
-            tankDrive.rightA.set(ControlMode.PercentOutput,0.5);
-        } else
-            tankDrive.setVelocity(1200, 1200);
-            System.out.println("DriveDinstance2 Execute Ended.");
+        tankDrive.goToEncoderTick(distance);
+        
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        System.out.println("TankDrive isFinished fired.");
-        if (forward)
-            return Math.abs((tankDrive.leftA.getSelectedSensorPosition(0)) + distance/Constants.TALON_RPS_TO_FPS * Constants.TALON_TICKS_PER_REV) < 300;
-        else
-            return Math.abs((tankDrive.leftA.getSelectedSensorPosition(0)) - distance/Constants.TALON_RPS_TO_FPS * Constants.TALON_TICKS_PER_REV) < 300;
-            
+        System.out.println("left distance: " + (Math.abs(tankDrive.leftA.getSelectedSensorPosition(0) - distance)));
+        System.out.println("right distance: " + (Math.abs(tankDrive.rightA.getSelectedSensorPosition(0) - distance)));
+        System.out.println("left finished: " + leftFinished + " right finished: " + rightFinished);
+        if (Math.abs(tankDrive.leftA.getSelectedSensorPosition(0) - distance) < 100)
+            leftFinished++;
+        if (Math.abs(tankDrive.rightA.getSelectedSensorPosition(0) - distance) < 100)
+            rightFinished++;
+        return leftFinished > 100 && rightFinished > 100;
+
+
         }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        System.out.println("TankDrive End fired.");
+        System.out.println("left finished: " + leftFinished + " right finished: " + rightFinished);
         tankDrive.setPercentage(0, 0);
     }
 
