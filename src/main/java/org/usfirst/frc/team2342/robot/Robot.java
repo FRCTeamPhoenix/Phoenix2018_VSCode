@@ -258,11 +258,14 @@ public class Robot extends IterativeRobot {
 		else if (AutonomousMode.equals("Test Auto"))
 
 			Scheduler.getInstance().add(new MiddleAuto(tankDrive, cascadeElevator, boxManipulator, gamepad));
-
+		else {
+			Scheduler.getInstance().add(new DriveDistance2(tankDrive, 10));
+		}
 	}
 
 	public void autonomousPeriodic() {
-
+		talonBL.follow(talonFL);
+		talonBR.follow(talonFR);
 		Scheduler.getInstance().run();
 
 		try {
