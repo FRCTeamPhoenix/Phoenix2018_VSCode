@@ -2,6 +2,7 @@ package org.usfirst.frc.team2342.robot.subsystems;
 
 import org.usfirst.frc.team2342.robot.PCMHandler;
 import org.usfirst.frc.team2342.util.Constants;
+import org.usfirst.frc.team2342.util.DistancePIDLoop;
 import org.usfirst.frc.team2342.util.PIDGains;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -21,9 +22,15 @@ public class TankDrive extends Subsystem{
 	private final int PidLoopIndexHigh = 0;
 	private final int PidLoopIndexLow = 0;
 	private final int PidTimeOutMs = 10;
+
+	public DistancePIDLoop distancePidLoopLeft;
+	public DistancePIDLoop distancePidLoopRight;
 	
 	public TankDrive(PCMHandler PCM, WPI_TalonSRX leftFR, WPI_TalonSRX rightFR, WPI_TalonSRX leftBA, WPI_TalonSRX rightBA) {
 		
+		distancePidLoopLeft = new DistancePIDLoop(0.9, 0, 0.05, 0, leftFR);
+		distancePidLoopRight = new DistancePIDLoop(0.9, 0, 0.05, 0, rightFR);
+
 		this.PCM = PCM;
 		leftA = leftFR;
 		rightA = rightFR;
@@ -127,9 +134,10 @@ public class TankDrive extends Subsystem{
 		double speed = Constants.WESTCOAST_HALF_SPEED;
 		/*if (-leftA.getSelectedSensorPosition(PidLoopIndexHigh) < distanceInFeet/Constants.TALON_RPS_TO_FPS * Constants.TALON_TICKS_PER_REV)
 			speed *= -1;*/
-		
-		setVelocity(-speed,-speed);
-		
+		double pidOutputL = distancePidLoopLeft.getCorrection();
+		double pidOutputR = distancePidLoopRight.getCorrection();
+		//setVelocity(-speed,-speed);
+		setPercentage(-pidOutputL, -pidOutputR);
 	}
 	@Override
 	protected void initDefaultCommand() {

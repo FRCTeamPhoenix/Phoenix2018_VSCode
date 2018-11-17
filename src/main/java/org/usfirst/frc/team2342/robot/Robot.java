@@ -237,6 +237,16 @@ public class Robot extends IterativeRobot {
 
 		System.out.println("AUTOMODE INIT");
 
+		tankDrive.distancePidLoopLeft.setPID(SmartDashboard.getNumber("DB/Slider 0", 0), 
+										     SmartDashboard.getNumber("DB/Slider 1", 0),
+										     SmartDashboard.getNumber("DB/Slider 2", 0),
+											 SmartDashboard.getNumber("DB/Slider 3", 0));
+											 
+		tankDrive.distancePidLoopRight.setPID(SmartDashboard.getNumber("DB/Slider 0", 0), 
+										      SmartDashboard.getNumber("DB/Slider 1", 0),
+										      SmartDashboard.getNumber("DB/Slider 2", 0),
+										      SmartDashboard.getNumber("DB/Slider 3", 0));
+
 		FMS.init();
 		try {
 			Thread.sleep(100);
@@ -246,7 +256,9 @@ public class Robot extends IterativeRobot {
 		String AutonomousMode;
 		AutonomousMode = SmartDashboard.getString("Auto Selector", "");
 		if (AutonomousMode.equals("Drive Forward"))
-			Scheduler.getInstance().add(new DriveDistance2(tankDrive, 10));
+			Scheduler.getInstance().add(new DriveDistance2(tankDrive, 8));
+		else if(AutonomousMode.equals("Drive Backward"))
+			Scheduler.getInstance().add(new DriveDistance2(tankDrive, -8));
 		else if (AutonomousMode.equals("Center Switch"))
 			Scheduler.getInstance().add(new MiddleAuto(tankDrive, cascadeElevator, boxManipulator, gamepad));
 		else if (AutonomousMode.equals("Right Switch"))
