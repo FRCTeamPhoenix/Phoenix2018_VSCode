@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2342.robot.subsystems;
 
 import org.usfirst.frc.team2342.robot.PCMHandler;
+import org.usfirst.frc.team2342.robot.sensors.Gyro;
 import org.usfirst.frc.team2342.util.Constants;
 import org.usfirst.frc.team2342.util.DistancePIDLoop;
 import org.usfirst.frc.team2342.util.PIDGains;
@@ -134,8 +135,8 @@ public class TankDrive extends Subsystem{
 		double speed = Constants.WESTCOAST_HALF_SPEED;
 		/*if (-leftA.getSelectedSensorPosition(PidLoopIndexHigh) < distanceInFeet/Constants.TALON_RPS_TO_FPS * Constants.TALON_TICKS_PER_REV)
 			speed *= -1;*/
-		double pidOutputL = distancePidLoopLeft.getCorrection();
-		double pidOutputR = distancePidLoopRight.getCorrection();
+		double pidOutputL = distancePidLoopLeft.getCorrection()* (1 + 0.01 * Gyro.angle());
+		double pidOutputR = distancePidLoopRight.getCorrection() * (1 - 0.01 * Gyro.angle());
 		//setVelocity(-speed,-speed);
 		setPercentage(-pidOutputL, -pidOutputR);
 	}

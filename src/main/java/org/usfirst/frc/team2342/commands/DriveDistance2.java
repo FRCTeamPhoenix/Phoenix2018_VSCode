@@ -78,12 +78,12 @@ public class DriveDistance2 extends Command {
             
         }*/
         //return false;
-        if( Math.abs((tankDrive.leftA.getSelectedSensorPosition(0)) + distance) < 300)
+        if( Math.abs((tankDrive.leftA.getSelectedSensorPosition(0)) + distance) < 800)
             leftFinished++;
-        if( Math.abs((tankDrive.rightA.getSelectedSensorPosition(0)) + distance) < 300)
+        if( Math.abs((tankDrive.rightA.getSelectedSensorPosition(0)) + distance) < 800)
             rightFinished++;
         System.out.println("left finished " + leftFinished + " rightFinished " + rightFinished);
-        return leftFinished >= 20 && rightFinished >= 20;
+        return (leftFinished >= 20 && rightFinished >= 20);// || ( (Math.abs((tankDrive.leftA.getSelectedSensorPosition(0)) + distance) < 300) && ( Math.abs((tankDrive.rightA.getSelectedSensorPosition(0)) + distance) < 300));
     }
 
     // Called once after isFinished returns true
