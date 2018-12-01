@@ -18,7 +18,8 @@ public class Constants {
 
 	public static final double TALON_TICKS_PER_REV = 4096.0;
 	public static final double TALON_SPEED_RPS = TALON_TICKS_PER_REV / 10;
-	//public static final double TALON_RPM_TO_VELOCITY = 1;//TALON_TICKS_PER_REV / 600.0;
+	//public static final double TALON_RPM_TO_VELOCITY = 1;/
+	//TALON_TICKS_PER_REV / 600.0;
 
 	public static final double TALON_RPS_TO_FPS = 1.57;
 
@@ -139,7 +140,7 @@ public class Constants {
 	public static final double Ki = 0.0d;
 	public static final double Kd = 0.0d;
 
-	// PID for Gyro TIP (Turn In Place)
+	// PID for Gyro TIP (Turn In Place)+
 	public static final double tKp = 0.1d;
 	public static final double tKi = 0.001d;
 	public static final double tKd = 0.0d;

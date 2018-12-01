@@ -51,6 +51,7 @@ public class TalonNWT {
 		NetworkTableInterface.setValue(talonTable, "Angle Error", GyroPIDController.calculateAE());
 	}*/
 	
+	
 	public static void updateTalon(TalonSRX talon){
 		String talonTable = Constants.TALON_TABLE_LOCATION + "/"+talon.getDeviceID();
 		NetworkTableInterface.setValue(talonTable, "setpoint", -Constants.WESTCOAST_HALF_SPEED);

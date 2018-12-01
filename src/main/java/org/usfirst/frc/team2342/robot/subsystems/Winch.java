@@ -18,38 +18,31 @@ public class Winch extends Subsystem {
   //assuiming a talon is used:
   public WPI_TalonSRX talonwinch;
 
-  
-  //    Methods / Commands:
-  
-  protected void initialize() {
-    
+  public Winch(WPI_TalonSRX talonwinch) {
+    this.talonwinch = talonwinch;
   }
 
   //input inches or time?
-  public winchSuckIn() {
+  public void winchSuckIn() {
     talonwinch.set(ControlMode.PercentOutput, 1.00);
   }
 
-  public winchLetOut() {
+  public void winchLetOut() {
     talonwinch.set(ControlMode.PercentOutput, -1.00);
   }
 
   // ??winch go to X distance let out (asssuming encoder)
-  public winchGoTo() {
+  public void winchGoTo() {
 
   }
   
-  protected boolean isFinished() {
-      return isTimedOut();
-  }
 
-  protected void end() {
+
+  public void end() {
     talonwinch.set(ControlMode.PercentOutput, 00);
   }
 
-  protected void interrupted() {
-    end();
-  }
+
 
 
 
