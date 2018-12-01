@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2342.robot;
 
+import org.usfirst.frc.team2342.robot.sensors.Gyro;
 import org.usfirst.frc.team2342.util.Constants;
 import org.usfirst.frc.team2342.util.NetworkTableInterface;
 
@@ -41,15 +42,11 @@ public class TalonNWT {
 		GyroPIDController.setD(NetworkTableInterface.getDouble(pidTable, "/D"));
 	}*/
 	
-	/*public static void updateGyroPID() {
-		int id = 100;
+	public static void updateGyroPID() {
+		int id = 10;
 		String talonTable = Constants.TALON_TABLE_LOCATION + "/" + id;
-		NetworkTableInterface.setValue(talonTable, "P", GyroPIDController.getP());
-		NetworkTableInterface.setValue(talonTable, "I", GyroPIDController.getI());
-		NetworkTableInterface.setValue(talonTable, "D", GyroPIDController.getD());
-		NetworkTableInterface.setValue(talonTable, "Current Angle", GyroPIDController.getCurAngle());
-		NetworkTableInterface.setValue(talonTable, "Angle Error", GyroPIDController.calculateAE());
-	}*/
+		NetworkTableInterface.setValue(talonTable, "Current Angle", (double)Gyro.angle());
+	}
 	
 	public static void updateTalon(TalonSRX talon){
 		String talonTable = Constants.TALON_TABLE_LOCATION + "/"+talon.getDeviceID();

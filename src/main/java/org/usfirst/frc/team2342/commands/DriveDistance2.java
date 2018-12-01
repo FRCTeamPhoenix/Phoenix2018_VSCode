@@ -1,11 +1,8 @@
 package org.usfirst.frc.team2342.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import org.usfirst.frc.team2342.robot.subsystems.TankDrive;
 import org.usfirst.frc.team2342.util.Constants;
-import java.*;
-import java.util.Scanner;
+import org.usfirst.frc.team2342.robot.sensors.Gyro;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -25,6 +22,7 @@ public class DriveDistance2 extends Command {
 
 	public DriveDistance2(TankDrive tankDrive, double distance) {
         System.out.println("DriveDistance2 created.");
+        Gyro.reset();
         requires(tankDrive);
     	this.tankDrive = tankDrive;
         this.distance = distance / Constants.TALON_RPS_TO_FPS * Constants.TALON_TICKS_PER_REV;

@@ -231,21 +231,19 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
+		TalonNetworkTableController.pushTalon(talonFL);
+		TalonNetworkTableController.pushTalon(talonFR);
 		talonFR.configSetParameter(ParamEnum.eOnBoot_BrakeMode, 1.0, 1, 0, 0);
 		talonFL.configSetParameter(ParamEnum.eOnBoot_BrakeMode, 1.0, 1, 0, 0);
 
 		System.out.println("AUTOMODE INIT");
 
-		tankDrive.distancePidLoopLeft.setPID(SmartDashboard.getNumber("DB/Slider 0", 0), 
+		tankDrive.gyroPidLoop.setPID(SmartDashboard.getNumber("DB/Slider 0", 0), 
 										     SmartDashboard.getNumber("DB/Slider 1", 0),
 										     SmartDashboard.getNumber("DB/Slider 2", 0),
 											 SmartDashboard.getNumber("DB/Slider 3", 0));
 											 
-		tankDrive.distancePidLoopRight.setPID(SmartDashboard.getNumber("DB/Slider 0", 0), 
-										      SmartDashboard.getNumber("DB/Slider 1", 0),
-										      SmartDashboard.getNumber("DB/Slider 2", 0),
-										      SmartDashboard.getNumber("DB/Slider 3", 0));
-
+		
 		FMS.init();
 		try {
 			Thread.sleep(100);
@@ -281,6 +279,10 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousPeriodic() {
+		TalonNWT.updateGyroPID();
+		TalonNWT.updateTalon(talonFR);
+		TalonNWT.updateTalon(talonFL);
+		//TalonNWT.updateGyroPID();
 		talonBL.follow(talonFL);
 		talonBR.follow(talonFR);
 		Scheduler.getInstance().run();
